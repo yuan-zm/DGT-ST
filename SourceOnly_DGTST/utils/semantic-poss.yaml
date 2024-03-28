@@ -1,0 +1,197 @@
+# This file is covered by the LICENSE file in the root of this project.
+labels: 
+  0: "unlabeled"
+  1: "rider"
+  2: "car"
+  3: "trunk"
+  4: "plant"
+  5: "traffic-sign"
+  6: "pole"
+  7: "trashcan"
+  8: "building"
+  9: "cone_stone"
+  10: "fence"
+  11: "bike"
+  12: "ground"
+  13: "person"
+
+color_map: # bgr
+  0: [0, 0, 0] # 0: "unlabeled"
+  4: [30, 30, 255] # 4: "1 person"
+  5: [30, 30, 255] # 5: "2+ person"
+  6: [200, 40, 255] # 6: "rider"
+  7: [245, 150, 100] # 7: "car"
+  8: [0, 60, 135] # 8: "trunk"
+  9: [0, 175, 0] # 9: "plants"
+  10: [0, 0, 255] # 10: "traffic sign 1"
+  11: [0, 0, 255] # 11: "traffic sign 2"
+  12: [0, 0, 255] # 12: "traffic sign 3"
+  13: [150, 240, 255] # 13: "pole"
+  14: [0, 255, 125] # 14: "trashcan"
+  15: [0, 200, 255] # 15: "building"
+  16: [255, 255, 50] # 16: "cone/stone"
+  17: [50, 120, 255] # 17: "fence"
+  21: [245, 230, 100] # 21: "bike"
+  22: [128, 128, 128] # 22: "ground"
+
+content: # as a ratio with the total number of points
+  0: 0.018889854628292943
+  1: 0.0002937197336781505
+  10: 0.040818519255974316
+  11: 0.00016609538710764618
+  13: 2.7879693665067774e-05
+  15: 0.00039838616015114444
+  16: 0.0
+  18: 0.0020633612104619787
+  20: 0.0016218197275284021
+  30: 0.00017698551338515307
+  31: 1.1065903904919655e-08
+  32: 5.532951952459828e-09
+  40: 0.1987493871255525
+  44: 0.014717169549888214
+  48: 0.14392298360372
+  49: 0.0039048553037472045
+  50: 0.1326861944777486
+  51: 0.0723592229456223
+  52: 0.002395131480328884
+  60: 4.7084144280367186e-05
+  70: 0.26681502148037506
+  71: 0.006035012012626033
+  72: 0.07814222006271769
+  80: 0.002855498193863172
+  81: 0.0006155958086189918
+  99: 0.009923127583046915
+  252: 0.001789309418528068
+  253: 0.00012709999297008662
+  254: 0.00016059776092534436
+  255: 3.745553104802113e-05
+  256: 0.0
+  257: 0.00011351574470342043
+  258: 0.00010157861367183268
+  259: 4.3840131989471124e-05
+
+# classes that are indistinguishable from single scan or inconsistent in
+# ground truth are mapped to their closest equivalent
+# 13 CLASSES
+learning_map:
+  0: 0 #"unlabeled"
+  4: 13 #"1 person"
+  5: 13 #"2+ person"
+  6: 1 #"rider"
+  7: 2 #"car"
+  8: 3 #"trunk"
+  9: 4 #"plants"
+  10: 5 #"traffic sign 1"  # standing sign
+  11: 5 #"traffic sign 2" # hanging sign
+  12: 5 #"traffic sign 3" # high/big hanging sign
+  13: 6 #"pole"
+  14: 7 #"trashcan" other objects
+  15: 8 #"building"
+  16: 9 #"cone/stone" other objects
+  17: 10 #"fence"
+  21: 11 #"bike"
+  22: 12 #"ground" # class definition
+
+learning_map_inv: # inverse of previous map
+  0: 0 # "unlabeled", and others ignored
+  1: 4 #"1 person"#"2+ person"
+  2: 6 #"rider"
+  3: 7 #"car"
+  4: 8 # "trunk"
+  5: 9 #"plants"
+  6: 10 #"traffic sign 1"  # standing sign #"traffic sign 2" # hanging sign #"traffic sign 3" # high/big hanging sign
+  7: 13 #"pole"
+  8: 14 #"trashcan" other objects #"cone/stone" other objects
+  9: 15 #"building"
+  10: 17 #"fence"
+  11: 21 #"bike"
+  12: 22 #"ground" # class definition
+
+learning_ignore: # Ignore classes
+  0: True # "unlabeled", and others ignored
+  1: False # "car"
+  2: False # "bicycle"
+  3: False # "motorcycle"
+  4: False # "truck"
+  5: False # "other-vehicle"
+  6: False # "person"
+  7: False # "bicyclist"
+  8: False # "motorcyclist"
+  9: False # "road"
+  10: False # "parking"
+  11: False # "sidewalk"
+  12: False # "other-ground"
+  13: False # "other-ground"
+
+# sp_transfer_learning_map: # inverse of previous map
+#   0: 0 # "unlabeled"
+#   1: 8 # "people"
+#   2: 9 # "rider"
+#   3: 7 # "car"
+#   4: 3 # "trunk"
+#   5: 2 # "plants"
+#   6: 6 # "traffic sign"
+#   7: 11 # "pole"
+#   8: 4 # "building"
+#   9: 5 # "fence"
+#   10: 10 # "bike"
+#   11: 1 # "ground"
+  
+
+transfer_label_name:
+  0: "unlabeled"
+  1: "person"
+  2: "rider"
+  3: "car"
+  4: "trunk"
+  5: "plants"
+  6: "traffic-sing"
+  7: "pole"
+  8: "other objects"
+  9: "building"
+  10: "fence"
+  11: "bike"
+  12: "ground"
+
+
+split: # sequence numbers
+  train:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+
+color_inv_map: # bgr
+  0: [0, 0, 0]
+  1: [30, 30, 255]
+  2: [200, 40, 255]
+  3: [245, 150, 100]
+  4: [0, 60, 135]
+  5: [0, 175, 0]
+  6: [0, 0, 255]
+  7: [150, 240, 255]
+  8: [255, 255, 50]
+  9: [0, 200, 255]
+  10: [50, 120, 255]
+  11: [245, 230, 100]
+  12: [255, 0, 255]
+data_statics:
+  proj_remission_mean: 0.056042798
+  proj_remission_std: 0.06395430833462928
+  proj_remission_max: 1.0
+  proj_remission_min: 0.0
+  proj_xyz_mean: [0.7375476, 1.50842905, -0.6344349]
+  proj_xyz_std: [18.19870793, 22.0675979, 1.69164382]
+  proj_xyz_max: [119.85189525, 119.99576062, 12.33317718]
+  proj_xyz_min: [-119.97141991, -119.96458376, -23.59291039]
+  proj_range_mean: 22.49576
+  proj_range_std: 17.838052156228994
+  proj_range_max: 0.0
+  proj_range_min: 120.0
+  proj_norm_mean: [3.6432492e-04, 1.8562119e-01, 6.5328634e-01]
+  proj_norm_var: [0.10620481, 0.24687652, 0.13462484]
+  proj_norm_std: [0.32589079, 0.4968667, 0.36691258]
+  proj_norm_min: [-0.9999653, -0.9999653, 0.0]
+  proj_norm_max: [0.9999653, 0.9999653, 1.0]

@@ -1,0 +1,47 @@
+TRAIN:
+  TYPE: "train_parameters"
+  PROJECT_NAME: 'syn2sk'
+  MAX_EPOCH: 60
+  SAVE_PERIOD: 10
+  LOG_PERIOD: 50
+
+  # Fix8W: 限制输入voxel的最大数量为 8W; IN_NUM_VOXELS控制
+  EXP_NAME: "Ori_M34_XYZ" # 
+  STAGE: "sourceOnly"
+  GPU_ID: 2
+  DEBUG: False # False # False # False # True # False
+
+#------ Network ------
+OPTIMIZER:
+  TYPE: "Adam"
+  LEARNING_RATE_G: 1.e-2
+
+MODEL_G:
+  TYPE: "G"
+  MODEL_NAME: "MinkUNet34"
+  IN_CHANNELS: 3  # coords (xyz) and intensity
+  NUM_CLASSES: 20  # Number of valid classes
+
+SRC_LOSS:
+  lambda_lov: 0. # 0: no lov loss for training
+
+#------ dataset ------
+DATASET_SOURCE:
+  TYPE: "SynLiDAR"
+  USE_INTENSITY: False # 输入是否使用Intensity
+  VOXEL_SIZE: 0.05
+  DATASET_DIR: '~/dataset/SynLiDAR/sub_dataset'
+  
+  mapping_file: 'utils/annotations.yaml'
+  IN_NUM_VOXELS: -80000 # -1000: 不限制输入voxel的数量 # 之前用的是7W
+
+  USE_DGT: False  
+
+DATASET_TARGET:
+  TYPE: "SemanticKITTI"
+
+DATALOADER:
+  NUM_WORKERS: 4
+  TRA_BATCH_SIZE: 6
+  VAL_BATCH_SIZE: 10
+
