@@ -1,0 +1,10 @@
+*.pyc
+
+change_data/
+.vscode/
+res_pred/
+saved_model/
+upload_model/
+preTraModel/
+workspace/
+wandb/

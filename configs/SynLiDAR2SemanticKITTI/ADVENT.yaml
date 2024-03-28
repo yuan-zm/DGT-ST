@@ -1,0 +1,95 @@
+
+TRAIN:
+  TYPE: "train_parameters"
+  PROJECT_NAME: 'syn2sk_DGTST_XYZ_CAL_M34_LsG'
+  
+  # for transfer learning
+  MAX_ITERS: 100000
+  MAX_EPOCHS: 100000
+
+  PREHEAT_STEPS: 5000
+  T_VAL_ITER: 4000
+  S_VAL_ITER: 4000
+  SAVE_MORE_ITER: False
+  SAVE_ITER: 80000
+  LOG_PERIOD: 50
+  PRETRAINPATH: 'path to the preTraModel' # e.g., preTraModel/syn2sk/SourceOnly/checkpoint_val_Sp.tar
+  RESUMEPATH: None
+ 
+  EXP_NAME: "ADVENT" 
+  STAGE: "ADVENT"
+  GPU_ID: 2
+  DEBUG: False # set True if you want to debug code. False | True  
+  
+SRC_LOSS:
+  lambda_lov: 0. 
+
+TGT_LOSS:
+  LAMBDA_ADV: 0.001
+
+  CAL_out: False # PCAN: use output proto to reweight the adversarial loss; 使用output proto来进行reweight  
+
+HYPERPARAMETER:
+  VOXEL_SIZE: 0.05
+
+#------ Network ------
+MODEL_G:
+  TYPE: "G"
+  MODEL_NAME: "MinkUNet34"
+  IN_CHANNELS: 3  # coords (xyz) and intensity
+  NUM_CLASSES: 20  # Number of valid classes
+
+  # 这个应该放到 dataset_source, 但是为了方便写代码 放到了这里
+  aug_shift_prob: -1.
+  aug_shift_range: 0.1
+  aug_data_prob: 10.
+
+MODEL_D:
+  TYPE: "D"
+  IS_ADVENT: True
+  MODEL_NAME: "Interpertation_Upsample"
+  IN_CHANNELS: 20  # coords (xyz) and intensity
+  GAN_MODE: "ls_gan" # ls_gan | vanilla_gan
+  N_LAYERS: 5
+  FEATURE_CHANNELS: [32, 64, 64, 128, 1] 
+  DOWN_SAMPLE_TIMES:  [2, 2, 2, 2, 2] 
+  DIS_KERNEL_SIZSE: 4
+  
+OPTIMIZER:
+  TYPE: "Adam"
+  LEARNING_RATE_G: 2.5e-4  # max learning rate of G
+  LEARNING_RATE_D: 1.e-4  # max learning rate of D
+
+#------ dataset ------
+DATASET_SOURCE:
+  TYPE: "SynLiDAR"
+  USE_INTENSITY: False # 输入是否使用Intensity
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -1000 
+  DATASET_DIR: '~/dataset/SynLiDAR/sub_dataset'
+ 
+  USE_DGT: False  
+  total_beams: 64
+
+DATASET_TARGET:
+  TYPE: "SemanticKITTI"
+  USE_INTENSITY: False # 输入是否使用Intensity
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -1000
+  DATASET_DIR: '~/dataset/semanticKITTI/dataset/sequences'
+  
+DATALOADER:
+  NUM_WORKERS: 2
+  TRA_BATCH_SIZE: 2
+  VAL_BATCH_SIZE: 2
+
+DEBUG:
+  T_VAL_ITER: 5
+  S_VAL_ITER: 20
+  LOG_PERIOD: 1
+  PREHEAT_STEPS: 10
+  EXP_NAME: 'debug'
+  PROTO_UPDATE_PERIOD: 15
+  T_THRE_ZERO_ITER: 13
+  AUX_LOSS_START_ITER: 12
+

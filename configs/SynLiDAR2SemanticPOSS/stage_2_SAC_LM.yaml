@@ -1,0 +1,107 @@
+
+TRAIN:
+  TYPE: "train_parameters"
+  PROJECT_NAME: 'syn2sp_DGTST_XYZ_CAL_M34_LsG'
+  
+  # for transfer learning
+  MAX_ITERS: 100000
+  MAX_EPOCHS: 100000
+
+  PREHEAT_STEPS: 5000
+  T_VAL_ITER: 1000
+  S_VAL_ITER: 4000
+  SAVE_MORE_ITER: False
+  SAVE_ITER: 80000
+  LOG_PERIOD: 50
+  PRETRAINPATH: 'path to the preTraModel' # e.g., preTraModel/syn2sp/stage_1_PCAN/checkpoint_val_target_Sp.tar
+  RESUMEPATH: None
+ 
+  EXP_NAME: "3_PcanCh_SacKl1e1_XYShift1e1_CE_100Mt9e2_M34_Ps9_Adam25e4_LaserMixGPU_ym" # 
+  STAGE: "stage_2_SACLM"
+  GPU_ID: 3
+  DEBUG: False # False | True 
+
+SRC_LOSS:
+  lambda_lov: 0. 
+
+TGT_LOSS:
+  lambda_sac: 0.1 
+  
+  CAL_out: False 
+
+PSEUDO_LABEL:
+  use_confidence: True # True | False #
+  threshold: 0.9
+
+MEAN_TEACHER:
+  # 如果使用了teacher模型，那么就是meanteacher模式
+  # 如果没有，那就是每个round的初始模型
+  TYPE: 'meanTeacher'
+  use_mt: True # Mt9e3
+  alpha_ema: 0.99
+  update_every: 100
+
+  round_period: 20000
+
+HYPERPARAMETER:
+  VOXEL_SIZE: 0.05
+
+#------ Network ------
+MODEL_G:
+  TYPE: "G"
+  MODEL_NAME: "MinkUNet34"
+  IN_CHANNELS: 3  # coords (xyz) and intensity
+  NUM_CLASSES: 14  # Number of valid classes
+
+  # 这个应该放到 dataset_source, 但是为了方便写代码 放到了这里
+  aug_shift_prob: 0.5
+  aug_shift_range: 0.1
+  aug_data_prob: 0.
+
+OPTIMIZER:
+  TYPE: "Adam"
+  LEARNING_RATE_G: 2.5e-4  # max learning rate of G
+
+#------ dataset ------
+DATASET_SOURCE:
+  TYPE: "SynLiDAR"
+  USE_INTENSITY: False # 输入是否使用Intensity
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -1000 # 70000
+  DATASET_DIR: '~/dataset/SynLiDAR/sub_dataset'
+
+  use_aug_for_laserMix: True
+  USE_DGT: True  
+
+  DENSITY: [34404.90337702, 21186.50640121,  7464.47998992, 3618.06023185,
+            1907.87081653,  1166.47878024,   758.06068548,  520.30176411,
+            365.83371976,   266.61421371]
+
+DATASET_TARGET:
+  TYPE: "SemanticPOSS"
+  USE_INTENSITY: False # 输入是否使用Intensity
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -1000
+  DATASET_DIR: '~/dataset/semanticPOSS/dataset/sequences/'
+  
+  use_aug_for_laserMix: False
+
+  DENSITY: [11928.8227492,  22433.8516881,  14100.80184887,  6775.66438907,
+            3469.73472669,  1925.77773312,  1209.1840836,    762.460209,
+            567.37821543,   377.77371383,]
+
+DATALOADER:
+  NUM_WORKERS: 2
+  TRA_BATCH_SIZE: 2
+  VAL_BATCH_SIZE: 2
+
+DEBUG:
+  T_VAL_ITER: 5
+  S_VAL_ITER: 20
+  LOG_PERIOD: 1
+  PREHEAT_STEPS: 10
+  EXP_NAME: 'debug'
+  PROTO_UPDATE_PERIOD: 15
+  T_THRE_ZERO_ITER: 13
+  AUX_LOSS_START_ITER: 12
+

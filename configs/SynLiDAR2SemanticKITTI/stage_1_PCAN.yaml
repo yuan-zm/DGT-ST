@@ -1,0 +1,139 @@
+
+TRAIN:
+  TYPE: "train_parameters"
+  PROJECT_NAME: 'syn2sk_DGTST_XYZ_CAL_M34_LsG'
+  
+  # for transfer learning
+  MAX_ITERS: 100000
+  MAX_EPOCHS: 100000
+
+  PREHEAT_STEPS: 5000
+  T_VAL_ITER: 4000
+  S_VAL_ITER: 4000
+  SAVE_MORE_ITER: False
+  SAVE_ITER: 80000
+  LOG_PERIOD: 50
+  PRETRAINPATH: 'path to the preTraModel' # e.g., preTraModel/syn2sk/SourceOnly/checkpoint_val_Sp.tar
+
+  RESUMEPATH: None
+  # ChSp: use checkpoint_val_Sp.tar checkpoint
+  # PcXYSht1e1: XY shift 0.1
+  # MT9e4: mean teacher alpha_ema = 0.9999
+  # Pcan5KEnt5e2: PCAN start at 5K iteration and use entropy to get the pseudo-label, the threshold is 0.05
+  EXP_NAME: "ChSp_PcXYSht1e1_MT9e4_Pcan5KEnt5e2_advent" # 
+  STAGE: "stage_1_PCAN"
+  GPU_ID: 0
+  DEBUG: True # set True if you want to debug code. False | True  
+  
+PSEUDO_LABEL:
+  start_iter: 5000  # start PCAN at start_iter 使用伪标签的起始迭代
+  
+  threshold: 0.95
+  use_confidence: False # True | False #
+
+  use_entropy: True
+  ent_threshold: 0.05
+
+SRC_LOSS:
+  lambda_lov: 0. 
+TGT_LOSS:
+  LAMBDA_ADV: 0.001
+  
+  lambda_cal_adv: 1. 
+  cal_start_iter: 5000
+
+  CATEGORY_ADV: True # PCAN
+  PROTO_REWEIGHT: True   # _1PRwR
+  CAL_out: True # PCAN: use output proto to reweight the adversarial loss; 使用output proto来进行reweight  
+
+MEAN_TEACHER:
+  # 如果使用了teacher模型，那么就是meanteacher模式
+  # 如果没有，那就是每个round的初始模型
+  TYPE: 'meanTeacher'
+  use_mt: True # Mt9e4
+  alpha_ema: 0.9999
+
+  round_change: False
+  round_period: 20000
+
+PROTOTYPE:
+  update_domain: "src" # src | tgt 
+  # source
+  ROUND_CHANGE_PROTOTYPE: False   # 一个round 更新一次prototype
+  PROTO_UPDATE_PERIOD: 20000 # 一个round多少次iter
+  SRCPROTOTYPE_UPDATE_MODE: 'mean' # moving_average | mean
+  PROTOTYPE_EMA_STEPLR: 0.9999 # if use moving_average to update src prorotype
+  # target
+  PSELAB_THRESH: 0.95
+
+HYPERPARAMETER:
+  VOXEL_SIZE: 0.05
+
+#------ Network ------
+MODEL_G:
+  TYPE: "G"
+  MODEL_NAME: "MinkUNet34"
+  IN_CHANNELS: 3  # coords (xyz) and intensity
+  NUM_CLASSES: 20  # Number of valid classes
+
+  # 这个应该放到 dataset_source, 但是为了方便写代码 放到了这里
+  aug_shift_prob: -1.
+  aug_shift_range: 0.1
+  aug_data_prob: 0.
+
+MODEL_D:
+  TYPE: "D"
+  IS_ADVENT: True
+  MODEL_NAME: "Interpertation_Upsample"
+  IN_CHANNELS: 20  # coords (xyz) and intensity
+  GAN_MODE: "ls_gan" # ls_gan | vanilla_gan
+  N_LAYERS: 5
+  FEATURE_CHANNELS: [32, 64, 64, 128, 1] 
+  DOWN_SAMPLE_TIMES:  [2, 2, 2, 2, 2] 
+  DIS_KERNEL_SIZSE: 4
+  
+OPTIMIZER:
+  TYPE: "Adam"
+  LEARNING_RATE_G: 2.5e-4  # max learning rate of G
+  LEARNING_RATE_D: 1.e-4  # max learning rate of D
+
+#------ dataset ------
+DATASET_SOURCE:
+  TYPE: "SynLiDAR"
+  USE_INTENSITY: False # 输入是否使用Intensity
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -1000
+  DATASET_DIR: '~/dataset/SynLiDAR/sub_dataset'
+  USE_DGT: True  
+  total_beams: 64
+
+  DENSITY: [34404.90337702, 21186.50640121,  7464.47998992, 3618.06023185,
+            1907.87081653,  1166.47878024,   758.06068548,  520.30176411,
+            365.83371976,   266.61421371]
+  
+DATASET_TARGET:
+  TYPE: "SemanticKITTI"
+  USE_INTENSITY: False # 输入是否使用Intensity
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -1000
+  DATASET_DIR: '~/dataset/semanticKITTI/dataset/sequences'
+ 
+  DENSITY: [4.31564169e+04, 2.85721894e+04, 8.54752828e+03, 3.35904741e+03,
+            1.65797047e+03, 8.88407527e+02, 5.35081129e+02, 3.27988604e+02,
+            3.24453738e+00, 0.00000000e+00]
+
+DATALOADER:
+  NUM_WORKERS: 2
+  TRA_BATCH_SIZE: 2
+  VAL_BATCH_SIZE: 2
+
+DEBUG:
+  T_VAL_ITER: 5
+  S_VAL_ITER: 20
+  LOG_PERIOD: 1
+  PREHEAT_STEPS: 10
+  EXP_NAME: 'debug'
+  PROTO_UPDATE_PERIOD: 15
+  T_THRE_ZERO_ITER: 13
+  AUX_LOSS_START_ITER: 12
+

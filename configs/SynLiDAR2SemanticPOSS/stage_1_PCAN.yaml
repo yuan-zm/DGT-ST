@@ -1,0 +1,136 @@
+
+TRAIN:
+  TYPE: "train_parameters"
+  PROJECT_NAME: 'syn2sp_DGTST_XYZ_CAL_M34_LsG'
+  
+  # for transfer learning
+  MAX_ITERS: 100000
+  MAX_EPOCHS: 100000
+
+  PREHEAT_STEPS: 5000
+  T_VAL_ITER: 1000
+  S_VAL_ITER: 4000
+  SAVE_MORE_ITER: False
+  SAVE_ITER: 80000
+  LOG_PERIOD: 50
+  PRETRAINPATH: 'path to the preTraModel' # e.g., preTraModel/syn2sp/SourceOnly/checkpoint_val_Sp.tar
+  RESUMEPATH: None
+  
+  # XYShift1e1R5: random 0.5 aug_shift_prob = 0.5
+  EXP_NAME: "1_DropBeam40_XYShift1e1R5_MT9e4_Sp_Pcan2WE5e2_advent" # 
+  STAGE: "stage_1_PCAN"
+  GPU_ID: 1
+  DEBUG: False 
+
+PSEUDO_LABEL:
+  start_iter: 5000  # 使用伪标签的起始迭代
+  threshold: 0.95
+  use_confidence: False # True | False #
+
+  use_entropy: True
+  ent_threshold: 0.05
+
+SRC_LOSS:
+  lambda_lov: 0. 
+  
+#------ Loss ------
+TGT_LOSS:
+  LAMBDA_ADV: 0.001
+
+  lambda_cal_adv: 1. # 0.6
+  cal_start_iter: 20000
+  
+  CATEGORY_ADV: True 
+  PROTO_REWEIGHT: True  
+  CAL_out: True 
+  
+MEAN_TEACHER:
+  # 如果使用了teacher模型，那么就是meanteacher模式
+  # 如果没有，那就是每个round的初始模型
+  TYPE: 'meanTeacher'
+  use_mt: True # MT9e4Eval_
+  alpha_ema: 0.9999
+
+  round_change: False
+  round_period: 20000
+
+PROTOTYPE:
+  update_domain: "src" # src | tgt 
+  # source
+  ROUND_CHANGE_PROTOTYPE: False   # 一个round 更新一次prototype
+  PROTO_UPDATE_PERIOD: 20000 # 一个round多少次iter
+  SRCPROTOTYPE_UPDATE_MODE: 'mean' # moving_average | mean
+  PROTOTYPE_EMA_STEPLR: 0.9999 # if use moving_average to update src prorotype
+  # target
+  PSELAB_THRESH: 0.95
+
+HYPERPARAMETER:
+  VOXEL_SIZE: 0.05
+
+  
+#------ Network ------
+MODEL_G:
+  TYPE: "G"
+  MODEL_NAME: "MinkUNet34"
+  IN_CHANNELS: 3  # coords (xyz) and intensity
+  NUM_CLASSES: 14  # Number of valid classes
+  
+  # 这个应该放到 dataset_source, 但是为了方便写代码 放到了这里
+  aug_data_prob: 0.
+  aug_shift_prob: 0.5
+  aug_shift_range: 0.1
+
+MODEL_D:
+  TYPE: "D"
+  IS_ADVENT: True
+  MODEL_NAME: "Interpertation_Upsample"
+  IN_CHANNELS: 14  # coords (xyz) and intensity
+  GAN_MODE: "ls_gan" # ls_gan | vanilla_gan
+  N_LAYERS: 5
+  FEATURE_CHANNELS: [32, 64, 64, 128, 1] 
+  DOWN_SAMPLE_TIMES:  [2, 2, 2, 2, 2] 
+  DIS_KERNEL_SIZSE: 4
+  
+OPTIMIZER:
+  TYPE: "Adam"
+  LEARNING_RATE_G: 2.5e-4  # max learning rate of G
+  LEARNING_RATE_D: 1.e-4  # max learning rate of D
+
+#------ dataset ------
+DATASET_SOURCE:
+  TYPE: "SynLiDAR"
+  USE_INTENSITY: False
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -1000 # 70000
+  DATASET_DIR: '~/dataset/SynLiDAR/sub_dataset'
+
+  DENSITY: [23354.03850806, 10496.81043347,  3684.93543347,  1767.5733871,
+            911.37681452,   575.55272177,   364.83311492,   238.79269153,
+            171.72595766,  128.75640121]
+  USE_DGT: True  
+  total_beams: 64
+
+DATASET_TARGET:
+  TYPE: "SemanticPOSS"
+  USE_INTENSITY: False
+  VOXEL_SIZE: 0.05
+  IN_NUM_VOXELS: -80000
+  DATASET_DIR: '~/dataset/semanticPOSS/dataset/sequences/'
+  DENSITY: [11928.8227492,  22433.8516881,  14100.80184887,  6775.66438907,
+            3469.73472669,  1925.77773312,  1209.1840836,    762.460209,
+            567.37821543,   377.77371383,]
+ 
+DATALOADER:
+  NUM_WORKERS: 4
+  TRA_BATCH_SIZE: 2
+  VAL_BATCH_SIZE: 2
+
+DEBUG:
+  T_VAL_ITER: 5
+  S_VAL_ITER: 20
+  LOG_PERIOD: 1
+  PREHEAT_STEPS: 10
+  EXP_NAME: 'debug'
+  PROTO_UPDATE_PERIOD: 15
+  T_THRE_ZERO_ITER: 13
+  AUX_LOSS_START_ITER: 12

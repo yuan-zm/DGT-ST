@@ -1,0 +1,244 @@
+# This file is covered by the LICENSE file in the root of this project.
+
+# Syn2Sk
+map_2_semantickitti_labels:
+  0: "unlabeled"
+  1: "car"
+  2: "bicycle"
+  3: "motorcycle"
+  4: "truck"
+  5: "other-vehicle"
+  6: "person"
+  7: "bicyclist"
+  8: "motorcyclist"
+  9: "road"
+  10: "parking"
+  11: "sidewalk"
+  12: "other-ground"
+  13: "building"
+  14: "fence"
+  15: "vegetation"
+  16: "trunk"
+  17: "terrain"
+  18: "pole"
+  19: "traffic-sign"
+
+map_2_semantickitti_learning_ignore: # Ignore classes
+  0: True      # "unlabeled", and others ignored
+  1: False     # "car"
+  2: False     # "bicycle"
+  3: False     # "motorcycle"
+  4: False     # "truck"
+  5: False     # "other-vehicle"
+  6: False     # "person"
+  7: False     # "bicyclist"
+  8: False     # "motorcyclist"
+  9: False     # "road"
+  10: False    # "parking"
+  11: False    # "sidewalk"
+  12: False    # "other-ground"
+  13: False    # "building"
+  14: False    # "fence"
+  15: False    # "vegetation"
+  16: False    # "trunk"
+  17: False    # "terrain"
+  18: False    # "pole"
+  19: False    # "traffic-sign"
+
+# An example of class mapping from synlidar to semantickitti,
+# classes that are indistinguishable from single scan or inconsistent in
+# ground truth are mapped to their closest equivalent.
+map_2_semantickitti:
+  0: 0  # "unlabeled"
+  1: 1  # "car"
+  2: 4  # "pick-up"
+  3: 4  # "truck"
+  4: 5  # "bus"
+  5: 2  # "bicycle"
+  6: 3  # "motorcycle"
+  7: 5  # "other-vehicle"
+  8: 9  # "road"
+  9: 11  # "sidewalk"
+  10: 10  # "parking"
+  11: 12  # "other-ground"
+  12: 6  # "female"
+  13: 6  # "male"
+  14: 6  # "kid"
+  15: 6  # "crowd"
+  16: 7  # "bicyclist"
+  17: 8  # "motorcyclist"
+  18: 13  # "building"
+  19: 0  # "other-structure"
+  20: 15  # "vegetation"
+  21: 16  # "trunk"
+  22: 17  # "terrain"
+  23: 19  # "traffic-sign"
+  24: 18  # "pole"
+  25: 0  # "traffic-cone"
+  26: 14  # "fence"
+  27: 0  # "garbage-can"
+  28: 0  # "electric-box"
+  29: 0  # "table"
+  30: 0  # "chair"
+  31: 0  # "bench"
+  32: 0  # "other-object"
+
+################## End Syn2Sk End ##################
+
+map_2_semanticposs_labels:
+  0: "unlabeled"
+  1: "rider"
+  2: "car"
+  3: "trunk"
+  4: "plant"
+  5: "traffic-sign"
+  6: "pole"
+  7: "trashcan"
+  8: "building"
+  9: "cone_stone"
+  10: "fence"
+  11: "bike"
+  12: "ground"
+  13: "person"
+
+# An example of class mapping from synlidar to semanticposs,
+# classes that are indistinguishable from single scan or inconsistent in
+# ground truth are mapped to their closest equivalent.
+map_2_semanticposs:
+  0: 0 # "unlabeled"
+  1: 2   # "car"
+  2: 2  
+  3: 2
+  4: 2
+  5: 11  # "bike"
+  6: 11
+  7: 0
+  8: 12  # "ground"
+  9: 12
+  10: 12
+  11: 12
+  12: 13  # "person"
+  13: 13
+  14: 13
+  15: 13
+  16: 1  # "rider"
+  17: 1
+  18: 8  # "building"
+  19: 0
+  20: 4  # "plant"
+  21: 3  # "trunk"
+  22: 4
+  23: 5  # "traffic-sign"
+  24: 6  # "pole"
+  25: 9  # "cone/stone"
+  26: 10 # "fence"
+  27: 7  # "trashcan"
+  28: 0  
+  29: 0 
+  30: 0 
+  31: 0 
+  32: 0
+
+map_2_semanticposs_learning_ignore: # Ignore classes
+  0: True # "unlabeled", and others ignored
+  1: False # "car"
+  2: False # "bicycle"
+  3: False # "motorcycle"
+  4: False # "truck"
+  5: False # "other-vehicle"
+  6: False # "person"
+  7: False # "bicyclist"
+  8: False # "motorcyclist"
+  9: False # "road"
+  10: False # "parking"
+  11: False # "sidewalk"
+  12: False # "other-ground"
+  13: False # "other-ground"
+
+################## End Syn2Sp End ##################
+
+labels:
+  0 : "unlabeled"
+  1: "car"
+  2: "pick-up"
+  3: "truck"
+  4: "bus"
+  5: "bicycle"
+  6: "motorcycle"
+  7: "other-vehicle"
+  8: "road"
+  9: "sidewalk"
+  10: "parking"
+  11: "other-ground"
+  12: "female"
+  13: "male"
+  14: "kid"
+  15: "crowd"  # multiple person that are very close
+  16: "bicyclist"
+  17: "motorcyclist"
+  18: "building"
+  19: "other-structure"
+  20: "vegetation"
+  21: "trunk"
+  22: "terrain"
+  23: "traffic-sign"
+  24: "pole"
+  25: "traffic-cone"
+  26: "fence"
+  27: "garbage-can"
+  28: "electric-box"
+  29: "table"
+  30: "chair"
+  31: "bench"
+  32: "other-object"
+
+color_map: # bgr
+  0 : [0, 0, 0]
+  1 : [0, 0, 255]
+  2: [245, 150, 100]
+  3: [245, 230, 100]
+  4: [250, 80, 100]
+  5: [150, 60, 30]
+  6: [255, 0, 0]
+  7: [180, 30, 80]
+  8: [255, 0, 0]
+  9: [30, 30, 255]
+  10: [200, 40, 255]
+  11: [90, 30, 150]
+  12: [255, 0, 255]
+  13: [255, 150, 255]
+  14: [75, 0, 75]
+  15: [75, 0, 175]
+  16: [0, 200, 255]
+  17: [50, 120, 255]
+  18: [0, 150, 255]
+  19: [170, 255, 150]
+  20: [0, 175, 0]
+  21: [0, 60, 135]
+  22: [80, 240, 150]
+  23: [150, 240, 255]
+  24: [0, 0, 255]
+  25: [255, 255, 50]
+  26: [245, 150, 100]
+  27: [255, 0, 0]
+  28: [200, 40, 255]
+  29: [30, 30, 255]
+  30: [90, 30, 150]
+  31: [250, 80, 100]
+  32: [180, 30, 80]
+
+sequences: # sequence numbers
+  - 00
+  - 01
+  - 02
+  - 03
+  - 04
+  - 05
+  - 06
+  - 07
+  - 08
+  - 09
+  - 10
+  - 11
+  - 12
+
