@@ -42,7 +42,7 @@ Our released implementation is tested on
 Please refer to [DGT.md](DGT.md) for the details.
 
 ## Train
-1. Please download the [pretrained model](#model_zoo) and organize the downloaded files as follows
+1. Please train a SourceOnly model (see `SourceOnly_DGTST`) or directly download the [pretrained model](#model_zoo) and organize the downloaded files as follows
 ```
 DGT_ST
 ├── preTraModel
