@@ -4,14 +4,18 @@ Adaptive Segmentation of 3D Point Clouds</strong></h3>
  <p align="center">
       Zhimin Yuan, Wankang Zeng, Yanfei Su, Weiquan Liu, Ming Cheng, Yulan Guo, Cheng Wang
     <br>
-    <a href=https://asc.xmu.edu.cn/" target='_blank'>ASC</a>,&nbsp;Xiamen University
+    <a href=https://asc.xmu.edu.cn/ target='_blank'>ASC</a>,&nbsp;Xiamen University
   </p>
 
 This is a official code release of [DGT-ST](https://arxiv.org/pdf/2403.18469.pdf). This code is mainly based on [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine).
 
-I was trying to clean the code to make it more readable. However, the cleaned code of **PCAN** can not reproduce the results shown in our paper. It may caused by the **instability** of the GAN training. Now, we are working on a new direction to obtain a warm-up model that is more stable than the GAN-based methods. So, we are not going to make too much effort for this. The code in this repo is only slightly cleaned but still nasty. Instead, we plan to publicize a new repo which focuses on **self-training-based methods** for 3D outdoor driving scenario UDA segmentation.
+I was trying to clean the code to make it more readable. However, the cleaned code of **PCAN** can not reproduce the results shown in our paper. It may caused by the **instability** of the GAN training. Now, we are working on a new direction to obtain a warm-up model that is more stable than the GAN-based methods. So, we are not going to make too much effort for this. The code in this repo is only slightly cleaned but still nasty. 
 
 The code was submitted in a hurry. Please contact me if you have any questions.
+
+## LiDAR_UDA
+
+We published a new [repo](https://github.com/yuan-zm/LiDAR_UDA) focusing on **self-training-based methods** for 3D outdoor driving scenario LiDAR point clouds UDA segmentation.
 
 ## Getting Started
 ```Shell
