@@ -30,6 +30,18 @@ pip install torch==1.10.1+cu111 torchvision==0.11.2+cu111 torchaudio==0.10.1 -f 
 # MinkowskiEngine==0.5.4
 pip install -U git+https://github.com/NVIDIA/MinkowskiEngine -v --no-deps --install-option="--blas_include_dirs=${CONDA_PREFIX}/include" --install-option="--blas=openblas"
 
+pip install tensorboard
+pip install setuptools==52.0.0
+pip install six
+pip install pyyaml
+pip install easydict
+pip install gitpython
+pip install wandb
+pip install torch-scatter -f https://data.pyg.org/whl/torch-1.10.1+cu111.html
+pip install tqdm
+pip install pandas
+pip install scikit-learn
+pip install opencv-python
 
 ```
 pip install other packages if needed.
